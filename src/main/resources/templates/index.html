@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Employee Researcher</title>
+</head>
+<body>
+	<div class="head1">
+		<h1>Employee Researcher</h1>
+		<h3>Selezionare il filtro desiderato</h3>
+	</div>
+
+	<div th:class="form_div"></div>
+
+
+	<div th:class="employee_table">
+		<table>
+			<thead>
+				<tr>
+					<th>First Name</th>
+					<th>Last Name</th>
+					<th>Department</th>
+					<th>salary</th>
+					<th>commission pct</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="employee:${allemplist}">
+					<td th:text="${employee.firstName}"></td>
+					<td th:text="${employee.lastName}"></td>
+					<td
+						th:text="${employee.department != null ? employee.department.departmentName : 'N/A'}"></td>
+					<td th:text="${employee.salary}"></td>
+					<td
+						th:text="${employee.commissionPct != null ? employee.commissionPct : 0.0}"></td>
+				</tr>
+			</tbody>
+		</table>
+
+
+	</div>
+
+</body>
+</html>
