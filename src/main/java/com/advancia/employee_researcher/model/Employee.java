@@ -47,7 +47,7 @@ public class Employee {
 	@JoinColumn(name = "MANAGER_ID")
 	private Employee manager;
 
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "DEPARTMENT_ID")
 	private Department department;
 
