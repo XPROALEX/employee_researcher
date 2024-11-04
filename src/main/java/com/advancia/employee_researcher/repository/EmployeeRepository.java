@@ -8,4 +8,4 @@ import com.advancia.employee_researcher.model.Employee;
 @Repository
 public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 
-}
+	}

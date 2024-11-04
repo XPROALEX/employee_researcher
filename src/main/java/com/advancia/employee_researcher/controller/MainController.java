@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.advancia.employee_researcher.model.Employee;
 import com.advancia.employee_researcher.service.CountryService;
@@ -34,9 +35,8 @@ public class MainController {
 
 	@GetMapping("/")
 	public String viewHomePage(Model model) {
-		List<Employee> fileteredEmpList = (List<Employee>) model.getAttribute("filteredEmpList");
-		if (fileteredEmpList == null || fileteredEmpList.isEmpty())
-			model.addAttribute("allEmpist", employeeService.getAllEmployees());
+
+
 		model.addAttribute("allDepList", departmentService.getAlldepartments());
 		model.addAttribute("allLocList", locationService.getAllLocations());
 		model.addAttribute("allCounList", countryService.getAllCountries());
@@ -45,9 +45,23 @@ public class MainController {
 	}
 
 	@PostMapping("/search")
-	public String postMethodName(Model model) {
+	public String postMethodName(@RequestParam(required = false, value = "firstName") String firstName,
+			@RequestParam(required = false, value = "lastName") String lastName,
+			@RequestParam(required = false, value = "departmentId") Long departmentId,
+			@RequestParam(required = false, value = "locationId") Long locationId,
+			@RequestParam(required = false, value = "countryId") String countryId,
+			@RequestParam(required = false, value = "regionId") Long regionId,
+			@RequestParam(required = false, value = "minSalary") int minSalary,
+			@RequestParam(required = false, value = "maxSalary") int maxSalary, Model model) {
 
-		return "redirect:/";
+		List<Employee> emp = employeeService.getFilteredEmployee(firstName, lastName, departmentId, locationId,
+				countryId, regionId,minSalary , maxSalary );
+
+		//List<Employee>emp= employeeService.getAllEmployees();
+		
+		model.addAttribute("employeeList", emp);
+
+		return "index";
 	}
 
 }

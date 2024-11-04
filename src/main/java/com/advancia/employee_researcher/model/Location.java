@@ -1,10 +1,14 @@
 package com.advancia.employee_researcher.model;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -27,9 +31,12 @@ public class Location {
 	@Column(name = "STATE_PROVINCE")
 	private String stateProvince;
 
-	@ManyToOne
+	@ManyToOne(fetch =FetchType.LAZY )
 	@JoinColumn(name = "COUNTRY_ID")
 	private Country country;
+
+	@OneToMany(mappedBy = "location",fetch =FetchType.LAZY )
+	private List<Department> departments;
 
 	public Long getLocationId() {
 		return locationId;
@@ -54,6 +61,11 @@ public class Location {
 	public Country getCountry() {
 		return country;
 	}
+
+	public List<Department> getDepartments() {
+		return departments;
+	}
 	
 	
+
 }

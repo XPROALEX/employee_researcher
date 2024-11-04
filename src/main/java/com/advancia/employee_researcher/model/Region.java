@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -19,7 +20,7 @@ public class Region {
 	@Column(name = "REGION_NAME")
 	private String regionName;
 
-	@OneToMany(mappedBy = "region")
+	@OneToMany(mappedBy = "region",fetch =FetchType.LAZY )
 	private List<Country> countries;
 
 	public Long getRegionId() {

@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -20,11 +21,11 @@ public class Country {
 	@Column(name = "COUNTRY_NAME")
 	private String countryName;
 
-	@ManyToOne
+	@ManyToOne(fetch =FetchType.LAZY )
 	@JoinColumn(name = "REGION_ID")
 	private Region region;
 
-	@OneToMany(mappedBy = "country")
+	@OneToMany(mappedBy = "country",fetch =FetchType.LAZY )
 	private List<Location> locations;
 
 	public String getCountryId() {

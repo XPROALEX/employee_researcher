@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -24,8 +25,12 @@ public class Department {
 	@JoinColumn(name = "MANAGER_ID")
 	private Employee manager;
 
-	@OneToMany(mappedBy = "department")
+	@OneToMany(mappedBy = "department",fetch =FetchType.LAZY )
 	private List<Employee> employees;
+	
+	@ManyToOne(fetch =FetchType.LAZY )
+	@JoinColumn(name="LOCATION_ID")
+	private Location location;
 
 	public Long getDepartmentId() {
 		return departmentId;
@@ -43,4 +48,10 @@ public class Department {
 		return employees;
 	}
 
+	public Location getLocation() {
+		return location;
+	}
+
+	
+	
 }
