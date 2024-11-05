@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+	<div th:fragment="research-emp">
+		<div th:class="form_div">
+
+			<form id="searchForm" action="#" th:action="@{/search}" 
+			th:object="${searchDTO}" method="POST">
+
+				<label th:class="name">Employee First Name:</label>
+				 	<input type="text" th:field="*{firstName}" /> 
+				 
+				 <label th:class="name">Employee Last Name:</label> 
+				 	<input type="text" th:field="*{lastName}" /> 
+				 
+				 <label>Department:</label>
+				 <select th:field="*{departmentId}">
+						<option value="0">All</option>
+						<option th:each="dept:${allDepList}"
+								th:value="${dept.departmentId}" 
+								th:text="${dept.departmentName}"></option>
+				</select> 
+				
+				<label>Location:</label> 
+				<select th:field="*{locationId}">
+					<option value="0">All</option>
+					<option th:each="loc:${allLocList}" 
+							th:value="${loc.locationId}"
+							th:text="${loc.city}"></option>
+				</select> 
+				
+				<label>Country:</label> 
+				<select th:field="*{countryId}">
+					<option value="">All</option>
+					<option th:each="country:${allCounList}"
+							th:value="${country.countryId}" 
+							th:text="${country.countryName}"></option>
+				</select> 
+				
+				<label>Region:</label> 
+				<select th:field="*{regionId}">
+					<option value="0">All</option>
+					<option th:each="region:${allRegList}"
+							th:value="${region.regionId}" 
+							th:text="${region.regionName}"></option>
+				</select> 
+				
+				<label>Min Salary:</label> 
+				<input type="number" th:field="*{minSalary}" min="0" max="100000" value="0" /> 
+				
+				<label>Max Salary:</label> 
+				<input type="number" th:field="*{maxSalary}" min="0" max="100000" value="100000" />
+
+				<button type="submit">Search</button>
+
+			</form>
+
+		</div>
+
+	</div>
+</body>

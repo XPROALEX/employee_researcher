@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<html>
 <head>
 <meta charset="UTF-8">
 <title>Employee Researcher</title>
@@ -11,99 +10,29 @@
 		<h3>Selezionare il filtro desiderato</h3>
 	</div>
 
-	<div th:class="form_div">
+	<div th:replace="fragment/research :: research-emp"></div>
 
-		<form action="#" th:action="@{/search}" method="POST">
+	<div id="employeeTable"
+		th:replace="fragment/table_fragment :: employee-table"></div>
 
-			<label th:class="name">Employee First Name:</label> 
-				<input type="text" name="firstName" /> 
-			
-			<label th:class="name">Employee Last Name:</label> 
-				<input type="text" name="lastName" /> 
-			
-			<label>Department:</label>
-				<select name="departmentId">
-				<option value="0">All</option>
-				<option th:each="dept:${allDepList}" th:value="${dept.departmentId}"
-					th:text="${dept.departmentName}"> 
-				</select> 
-			
-			<label>Location:</label> 
-				<select name="locationId">
-				<option value="0">All</option>
-				<option th:each="loc:${allLocList}" th:value="${loc.locationId}"
-					th:text="${loc.city}"> 
-				</select> 
-					
-			<label>Country:</label> 
-				<select name="countryId">
-				<option value="">All</option>
-				<option th:each="country:${allCounList}"
-					th:value="${country.countryId}" th:text="${country.countryName}">
-				</select>
-			
-			<label>Region:</label> 
-				<select name="regionId">
-				<option value="0">All</option>
-				<option th:each="region:${allRegList}" th:value="${region.regionId}"
-					th:text="${region.regionName}">
-				</select> 
-				
-				
-			
-			<label>Min Salary:</label> 
-				<input type="number" name="minSalary"
-				min="0" max="100000" value="0" /> 
-				
-			<label>Max Salary:</label> 
-				<input type="number" name="maxSalary" 
-				min="0" max="100000" value="100000" />
-
-			<button type="submit">Search</button>
-
-		</form>
-
-	</div>
-
-	<div th:class="employee_table">
-		<table>
-			<thead>
-				<tr>
-					<th>First Name</th>
-					<th>Last Name</th>
-					<th>Department</th>
-					<th>salary</th>
-					<th>commission pct</th>
-					<th>location</th>
-					<td>country</td>
-					<td>region</td>
-				</tr>
-			</thead>
-			<tbody>
-				<tr th:each="employee:${employeeList}">
-					<td th:text="${employee.firstName}"></td>
-					<td th:text="${employee.lastName}"></td>
-					<td
-						th:text="${employee.department != null ? employee.department.departmentName : 'N/A'}"></td>
-					<td th:text="${employee.salary}"></td>
-					<td
-						th:text="${employee.commissionPct != null ? employee.commissionPct : 0.0}"></td>
-					<td
-						th:text="${employee.department != null ? employee.department.location.city : 'N/A'}">
-					</td>
-					<td
-						th:text="${employee.department != null ? employee.department.location.country.countryName : 'N/A'}">
-					</td>
-					<td
-						th:text="${employee.department != null ? employee.department.location.country.region.regionName : 'N/A'}">
-					</td>
-
-				</tr>
-			</tbody>
-		</table>
-
-
-	</div>
+	<script>
+    document.getElementById("searchForm").addEventListener("submit", function(event) {
+        event.preventDefault(); 
+        const formData = new FormData(this);
+        
+        fetch("/search", {
+            method: "POST",
+            body: formData,
+        })
+        .then(response => response.text())
+        .then(html => {  
+            document.getElementById("employeeTable").innerHTML = html;
+        })
+        .catch(error => console.error("Error:", error));
+    });
+</script>
 
 </body>
+
+
 </html>

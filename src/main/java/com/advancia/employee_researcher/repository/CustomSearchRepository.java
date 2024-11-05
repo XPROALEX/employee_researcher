@@ -1,5 +1,6 @@
 package com.advancia.employee_researcher.repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -18,14 +19,18 @@ import com.advancia.employee_researcher.model.Department;
 import com.advancia.employee_researcher.model.Employee;
 import com.advancia.employee_researcher.model.Location;
 import com.advancia.employee_researcher.model.Region;
+import com.advancia.employee_researcher.model.SearchDTO;
 
 @Repository
 public class CustomSearchRepository {
 	@Autowired
 	private EntityManager em;
 
-	public List<Employee> getFilteredEmployee(String firstName, String lastName, Long departmentId, Long locationId,
-			String countryId, Long regionId, int minSalary, int maxSalary) {
+	/**
+	 * @param search
+	 * @return
+	 */
+	public List<Employee> getFilteredEmployee(SearchDTO search) {
 		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
 		CriteriaQuery<Employee> criteriaQuery = criteriaBuilder.createQuery(Employee.class);
 
@@ -40,35 +45,39 @@ public class CustomSearchRepository {
 
 		Predicate predicate = criteriaBuilder.conjunction();
 
-		if (firstName != null || !firstName.isBlank())
+		List<Predicate> predicatesList = new ArrayList<Predicate>();
+
+		if (search.getFirstName() != null || !search.getFirstName().isBlank())
 			predicate = criteriaBuilder.and(predicate,
-					criteriaBuilder.like(root.get("firstName"), "%" + firstName + "%"));
+					criteriaBuilder.like(root.get("firstName"), "%" + search.getFirstName() + "%"));
 
-		if (lastName != null || !lastName.isBlank())
+		if (search.getLastName() != null || !search.getLastName().isBlank())
 			predicate = criteriaBuilder.and(predicate,
-					criteriaBuilder.like(root.get("lastName"), "%" + lastName + "%"));
+					criteriaBuilder.like(root.get("lastName"), "%" + search.getLastName() + "%"));
 
-		if (departmentId != 0)
+		if (search.getDepartmentId() != 0)
 			predicate = criteriaBuilder.and(predicate,
-					criteriaBuilder.equal(departmentJoin.get("departmentId"), departmentId));
+					criteriaBuilder.equal(departmentJoin.get("departmentId"), search.getDepartmentId()));
 
-		if (locationId != 0)
+		if (search.getLocationId() != 0)
 			predicate = criteriaBuilder.and(predicate,
-					criteriaBuilder.equal(locationJoin.get("locationId"), locationId));
+					criteriaBuilder.equal(locationJoin.get("locationId"), search.getLocationId()));
 
-		if (countryId != null || !countryId.isBlank())
-			predicate = criteriaBuilder.and(predicate, criteriaBuilder.equal(countryJoin.get("countryId"), countryId));
-
-		if (locationId != 0)
-			predicate = criteriaBuilder.and(predicate, criteriaBuilder.equal(regionJoin.get("regionId"), regionId));
-
-		if (minSalary != 0)
+		if (search.getCountryId() != null || !search.getCountryId().isBlank())
 			predicate = criteriaBuilder.and(predicate,
-					criteriaBuilder.greaterThanOrEqualTo(root.get("salary"), minSalary));
+					criteriaBuilder.equal(countryJoin.get("countryId"), search.getCountryId()));
 
-		if (maxSalary != 0)
+		if (search.getRegionId() != 0)
 			predicate = criteriaBuilder.and(predicate,
-					criteriaBuilder.lessThanOrEqualTo(root.get("salary"), maxSalary));
+					criteriaBuilder.equal(regionJoin.get("regionId"), search.getRegionId()));
+
+		if (search.getMinSalary() != 0)
+			predicate = criteriaBuilder.and(predicate,
+					criteriaBuilder.greaterThanOrEqualTo(root.get("salary"), search.getMinSalary()));
+
+		if (search.getMaxSalary() != 0)
+			predicate = criteriaBuilder.and(predicate,
+					criteriaBuilder.lessThanOrEqualTo(root.get("salary"), search.getMaxSalary()));
 
 		criteriaQuery.where(predicate);
 		TypedQuery<Employee> query = em.createQuery(criteriaQuery);

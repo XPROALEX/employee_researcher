@@ -6,10 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.advancia.employee_researcher.model.Employee;
+import com.advancia.employee_researcher.model.SearchDTO;
 import com.advancia.employee_researcher.service.CountryService;
 import com.advancia.employee_researcher.service.DepartmentService;
 import com.advancia.employee_researcher.service.EmployeeService;
@@ -35,8 +36,7 @@ public class MainController {
 
 	@GetMapping("/")
 	public String viewHomePage(Model model) {
-
-
+		model.addAttribute("searchDTO", new SearchDTO());
 		model.addAttribute("allDepList", departmentService.getAlldepartments());
 		model.addAttribute("allLocList", locationService.getAllLocations());
 		model.addAttribute("allCounList", countryService.getAllCountries());
@@ -45,23 +45,15 @@ public class MainController {
 	}
 
 	@PostMapping("/search")
-	public String postMethodName(@RequestParam(required = false, value = "firstName") String firstName,
-			@RequestParam(required = false, value = "lastName") String lastName,
-			@RequestParam(required = false, value = "departmentId") Long departmentId,
-			@RequestParam(required = false, value = "locationId") Long locationId,
-			@RequestParam(required = false, value = "countryId") String countryId,
-			@RequestParam(required = false, value = "regionId") Long regionId,
-			@RequestParam(required = false, value = "minSalary") int minSalary,
-			@RequestParam(required = false, value = "maxSalary") int maxSalary, Model model) {
+	public String postMethodName(@ModelAttribute("searchDTO") SearchDTO searchDTO, Model model) {
 
-		List<Employee> emp = employeeService.getFilteredEmployee(firstName, lastName, departmentId, locationId,
-				countryId, regionId,minSalary , maxSalary );
+		List<Employee> emp = employeeService.getFilteredEmployee(searchDTO);
 
-		//List<Employee>emp= employeeService.getAllEmployees();
-		
+		//List<Employee> emp = employeeService.getAllEmployees();
+
 		model.addAttribute("employeeList", emp);
 
-		return "index";
+		return "fragment/table_fragment :: employee-table";
 	}
 
 }

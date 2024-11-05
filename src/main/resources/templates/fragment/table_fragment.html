@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+	<div id="employeeTable" th:fragment="employee-table">
+		<div th:class="table-1">
+			<table>
+				<thead>
+					<tr>
+						<th>First Name</th>
+						<th>Last Name</th>
+						<th>Department</th>
+						<th>salary</th>
+						<th>commission pct</th>
+						<th>location</th>
+						<td>country</td>
+						<td>region</td>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="employee:${employeeList}">
+						<td th:text="${employee.firstName}"></td>
+						<td th:text="${employee.lastName}"></td>
+						<td
+							th:text="${employee.department != null ? employee.department.departmentName : 'N/A'}"></td>
+						<td th:text="${employee.salary}"></td>
+						<td
+							th:text="${employee.commissionPct != null ? employee.commissionPct : 0.0}"></td>
+						<td
+							th:text="${employee.department != null ? employee.department.location.city : 'N/A'}">
+						</td>
+						<td
+							th:text="${employee.department != null ? employee.department.location.country.countryName : 'N/A'}">
+						</td>
+						<td
+							th:text="${employee.department != null ? employee.department.location.country.region.regionName : 'N/A'}">
+						</td>
+
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+	</div>
+
+</body>
+
+</html>
