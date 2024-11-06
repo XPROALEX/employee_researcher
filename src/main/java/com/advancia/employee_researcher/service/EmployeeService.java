@@ -27,4 +27,9 @@ public class EmployeeService {
 		return customSearchRepository.getFilteredEmployee(search);
 	}
 
+	public List<Employee> getFilteredEmployee2(SearchDTO search) {
+
+		return customSearchRepository.getFilteredEmployee2(search);
+	}
+
 }

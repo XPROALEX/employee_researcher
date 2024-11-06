@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
+
 <body>
 	<div id="employeeTable" th:fragment="employee-table">
 		<div th:class="table-1">
 			<table>
 				<thead>
 					<tr>
+						<th>ID</th>
 						<th>First Name</th>
 						<th>Last Name</th>
 						<th>Department</th>
@@ -19,6 +21,8 @@
 				</thead>
 				<tbody>
 					<tr th:each="employee:${employeeList}">
+
+						<td th:text="${employee.id}"></td>
 						<td th:text="${employee.firstName}"></td>
 						<td th:text="${employee.lastName}"></td>
 						<td

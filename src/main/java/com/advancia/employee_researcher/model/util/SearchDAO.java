@@ -1,4 +1,4 @@
-package com.advancia.employee_researcher.service.util;
+package com.advancia.employee_researcher.model.util;
 
 public class SearchDAO {
 

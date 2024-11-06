@@ -47,9 +47,7 @@ public class MainController {
 	@PostMapping("/search")
 	public String postMethodName(@ModelAttribute("searchDTO") SearchDTO searchDTO, Model model) {
 
-		List<Employee> emp = employeeService.getFilteredEmployee(searchDTO);
-
-		//List<Employee> emp = employeeService.getAllEmployees();
+		List<Employee> emp = employeeService.getFilteredEmployee2(searchDTO);
 
 		model.addAttribute("employeeList", emp);
 
